@@ -1,0 +1,1 @@
+main_menu_options = {1: "View Products", 2: "Add a product to inventory", 3: "Update Existing Product details" }
