@@ -62,6 +62,38 @@ def delete_product(prod_id):
     )
 
 
+@app.route("/product/<prod_id>", methods=["PATCH"])
+def update_product(prod_id):
+    db_id, controller_response, message = invController.update_product_record(prod_id, request.form)
+    return Response(
+        response=json.dumps(
+            {"message": message,
+             "id": db_id,
+             "success_code": str(controller_response)
+             },
+        ),
+        # {"name":"Philip","ID":,f"{dbResponse.inserted_id}"},
+        status=200 if controller_response > 0 else 422,
+        mimetype='application/json'
+    )
+
+
+@app.route("/product/<prod_id>", methods=["GET"])
+def retrieve_product(prod_id):
+    prods_data, controller_response, message = invController.retrieve_product_record(prod_id)
+    return Response(
+        response=json.dumps(
+            {"message": message,
+             "success_code": str(controller_response),
+             "prods_data": prods_data,
+             },
+        ),
+        # {"name":"Philip","ID":,f"{dbResponse.inserted_id}"},
+        status=200 if controller_response > 0 else 422,
+        mimetype='application/json'
+    )
+
+
 #######################################
 if __name__ == "__main__":
     # logging.info("Starting Server")
