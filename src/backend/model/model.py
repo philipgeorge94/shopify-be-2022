@@ -43,6 +43,7 @@ class InvModel:
                 "prod_name": prod_data['prod_name'],
                 "prod_price": prod_data['prod_price'],
                 "prod_desc": prod_data['prod_desc'],
+                "prod_qty": prod_data['prod_qty'],
             }
             dbResponse = self.db.product.insert_one(query)
             print("dbResponse successful")
@@ -61,7 +62,7 @@ class InvModel:
     def remove_product(self, prod_id):
         print("in remove_product function")
         try:
-            query = {"_id": ObjectId(prod_id)}
+            query = {"_id": ObjectId(self.prod_ids[prod_id])}
             dbResponse = self.db.product.delete_one(query)
             for attr in dir(dbResponse):
                 print(f"****{attr}****")
@@ -84,7 +85,8 @@ class InvModel:
                     "prod_id": prod_data['prod_id'],
                     "prod_name": prod_data['prod_name'],
                     "prod_price": prod_data['prod_price'],
-                    "prod_desc": prod_data['prod_desc']
+                    "prod_desc": prod_data['prod_desc'],
+                    "prod_qty": prod_data['prod_qty']
                 }
             }
             dbResponse = self.db.product.update_one(queryFilter, queryValues)

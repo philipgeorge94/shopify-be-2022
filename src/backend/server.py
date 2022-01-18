@@ -32,6 +32,7 @@ def affirm_connection():
 
 @app.route("/product", methods=["POST"])
 def create_product():
+    print("Request form: ", request.form)
     db_id, controller_response, message = invController.create_product_record(request.form)
     return Response(
         response=json.dumps(
