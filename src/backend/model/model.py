@@ -93,6 +93,8 @@ class InvModel:
             print("dbResponse successful")
 
             if dbResponse.modified_count > 0:
+                self.prod_ids[prod_data['prod_id']] = db_id
+                del self.prod_ids[prod_id]
                 return db_id, True
             else:
                 return db_id, False

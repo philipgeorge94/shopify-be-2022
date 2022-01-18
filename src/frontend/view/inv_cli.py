@@ -2,7 +2,7 @@ import json
 import uuid
 import requests
 from src.frontend.frontend_utils.constants import *
-from src.frontend.frontend_utils.frontend_utils import get_yn, refresh_prod_lookups
+from src.frontend.frontend_utils.frontend_utils import get_yn, refresh_prod_lookups, print_prod_data
 
 
 class InvCLI:
@@ -11,10 +11,11 @@ class InvCLI:
         self.url = 'http://localhost:8000/'
         self.check_connection()
         self.choices = main_menu_options
-        self.prod_ids = refresh_prod_lookups(self.retrieve_products('all'))
+        self.prod_ids = refresh_prod_lookups(self.retrieve_products('all')[2])
 
     def retrieve_products(self, prod_id):
         response = requests.get(self.url + 'product/' + prod_id).json()
+        print("Retrieved Products: ", response)
         return response['message'], int(response['success_code']), response['prods_data']
 
     def check_connection(self):
@@ -120,14 +121,7 @@ class InvCLI:
             return True
 
         if success_code == 1:
-            print()
-            print(str(len(prods_data)) + ' product(s) retrieved. Printing...')
-            print()
-            for prod in prods_data:
-                prod_str = []
-                for key, value in prod.items():
-                    prod_str.append(key + " = " + value)
-                print(" | ".join(prod_str[1:]))
+            print_prod_data(prods_data)
             return True
         else:
             print(message)
@@ -136,18 +130,20 @@ class InvCLI:
     def update_field_menu(self, prod):
         while True:
             print()
-            print("Editing product " + prod['prod_id'])
-            print("Enter number indicating field you want to change or 0 to submit changes: ")
+            print("Editing product ")
+            print_prod_data([prod])
+            print(str(0) + ". Save to database")
             for key, value in prod_fields.items():
-                print(key, ". " + value[0])
-            field = int(input("Enter field number: "))
+                print(str(key) + ". Edit", value[0])
+            field = int(input("Enter choice: "))
             if field == 0:
                 break
             if field < 0 or field > len(prod_fields):
                 print()
                 print("Invalid input! Enter again.")
                 continue
-            prod[prod_fields[field]] = input("Enter new value for %s: " % prod_fields[field])
+            prod[prod_fields[field][1]] = input("Enter new value for %s: " % prod_fields[field][0])
+            print("Value changed")
 
         return prod
 
@@ -165,30 +161,34 @@ class InvCLI:
         if success_code != 1:
             print(message)
             return False
+
+        print_prod_data(prods_data)
+
+        old_prod_id = prods_data[0]['prod_id']
+        prod = self.update_field_menu(prods_data[0])
+
+        response = requests.patch(self.url + 'product/' + old_prod_id, data=prod).json()
+        success_code = int(response['success_code'])
         print()
-        print(str(len(prods_data)) + ' product(s) retrieved. Printing...')
-        print()
-        for prod in prods_data:
-            prod_str = []
-            for key, value in prod.items():
-                prod_str.append(key + " = " + value)
-            print(" | ".join(prod_str[1:]))
-
-        old_prod_id = prod = prods_data.values()[0]['prod_id']
-        prod = self.update_field_menu(prods_data.values()[0])
-
-        response = requests.patch(self.url + 'product/' + old_prod_id, data=prod)
-        success_code = response['success_code']
-
+        print(response['message'])
         if success_code == 1:
-            print()
-            print(" Product was updated")
+            print("Prod IDs before: ", self.prod_ids)
+            self.prod_ids[prod['prod_id']] = self.prod_ids[old_prod_id]
+            print("Prod IDs after adding new id: ", self.prod_ids)
+            del self.prod_ids[old_prod_id]
+            print("Prod IDs after deleting old ID: ", self.prod_ids)
+            print_prod_data([prod])
+            return True
+        elif success_code == 3:
+            return True
+        else:
+            return False
 
     def execute_user_command(self, command):
         if command > 4:
             print("Not a valid command")
             print()
-            flow = None
+            flow = False
             return
         if command == 1:
             flow = self.create_product_menu()
