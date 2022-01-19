@@ -1,3 +1,6 @@
+import os
+
+
 def get_yn(prompt):
     response = input(prompt).lower()
     if response == 'yes' or response == 'y':
@@ -13,6 +16,7 @@ def refresh_prod_lookups(prods_data):
         prod_ids[prod['prod_id']] = prod['_id']
     return prod_ids
 
+
 def print_prod_data(prods_data):
     print()
     print(str(len(prods_data)) + ' product(s) retrieved. Printing...')
@@ -23,3 +27,13 @@ def print_prod_data(prods_data):
             prod_str.append(key + " = " + value)
         print(" | ".join(prod_str[1:]))
     return
+
+
+def save_to_csv(text, filename):
+    try:
+        with open(os.getcwd() + '/downloads/' + filename, 'w') as wf:
+            wf.write(text)
+        return True
+    except Exception as ex:
+        print(ex)
+        return False

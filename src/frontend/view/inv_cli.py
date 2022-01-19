@@ -2,7 +2,7 @@ import json
 import uuid
 import requests
 from src.frontend.frontend_utils.constants import *
-from src.frontend.frontend_utils.frontend_utils import get_yn, refresh_prod_lookups, print_prod_data
+from src.frontend.frontend_utils.frontend_utils import get_yn, refresh_prod_lookups, print_prod_data, save_to_csv
 
 
 class InvCLI:
@@ -33,6 +33,7 @@ class InvCLI:
         print("2. View products")
         print("3. Update existing product details")
         print("4. Delete product")
+        print("5. Export products to CSV")
         print("0. Close program")
         print()
         user_choice = int(input("Enter choice: "))
@@ -185,8 +186,16 @@ class InvCLI:
         else:
             return False
 
+    def export_product_menu(self):
+        response = requests.get(self.url + 'product/export')
+        csv_data = response.text
+        filename = response.headers['content-disposition'][response.headers['content-disposition'].rfind("/") + 1: -1]
+        print(filename)
+        print("Saving to <Your repo folder>/downloads/")
+        return save_to_csv(csv_data, filename)
+
     def execute_user_command(self, command):
-        if command > 4:
+        if command > 5:
             print("Not a valid command")
             print()
             flow = False
@@ -199,6 +208,8 @@ class InvCLI:
             flow = self.update_product_menu()
         if command == 4:
             flow = self.delete_product_menu()
+        if command == 5:
+            flow = self.export_product_menu()
         # elif command == 2:
         #     flow = self.initiate_delete_product()
         # elif command == 3:

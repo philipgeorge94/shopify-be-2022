@@ -1,7 +1,10 @@
 import json
-from flask import Flask, Response, request
+
+from flask import Flask, Response, request, send_file
 import pymongo
 import argparse
+
+from src.backend.backend_utils.backend_utils import export_to_csv
 from src.backend.controller.controller import InvController
 
 parser = argparse.ArgumentParser(description="Run server for inventory management")
@@ -106,6 +109,21 @@ def retrieve_product(prod_id):
         status=200 if controller_response > 0 else 422,
         mimetype='application/json'
     )
+
+@app.route("/product/export", methods = ["GET"])
+def download_product_csv():
+    prods_data, _, _ = invController.retrieve_product_record('all')
+    filename = export_to_csv(prods_data)
+    return send_file(filename,
+                     mimetype='text/csv',
+                     download_name=filename,
+                     as_attachment=True)
+    # return Response(
+    #     response=json.dumps({"current working directory": os.getcwd()}),
+    #     # {"name":"Philip","ID":,f"{dbResponse.inserted_id}"},
+    #     status=200,
+    #     mimetype='application/json'
+    # )
 
 
 #######################################

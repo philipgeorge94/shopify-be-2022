@@ -1,13 +1,10 @@
-from bson import ObjectId
-from flask import Flask, Response, request
 from bson.objectid import ObjectId
-import json
-
-from backend_utils.backend_utils import get_prod_id_list
+from src.backend.backend_utils.backend_utils import get_prod_id_list
 
 
 class InvModel:
     def __init__(self, db):
+        self.prod_ids = None
         self.db = db
 
         # Initializing the list of prod_ids to enable easy checking of existing categories
