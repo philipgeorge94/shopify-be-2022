@@ -47,7 +47,7 @@ $ python src/backend/server.py -p <DB_PASSWORD> -i <PORT>
 
 ### Run the Frontend Application
 1. Open a new Terminal tab. **Keep the terminal (or command prompt) tab from the previous steps open.**
-2. By default, the new Terminal should open in `/your/path/shopify-be-2022`, and the shell should be the activated `venv` virtual environment. On macOS, this is identifiable with a '(venv)' prefix to the prompt as shown below:</br> </br>![img.png](illustration_venv.png)
+2. By default, the new Terminal should open in `/your/path/shopify-be-2022`, and the shell should be the activated `venv` virtual environment. On macOS, this is identifiable with a '(venv)' prefix to the prompt as shown below:</br> </br>![img.png](project_utils/illustration_venv.png)
 3. **If this is not the case**, then navigate to `/your/path/shopify-be-2022` and run the `source venv/bin/activate` command again
 4. Since we've opened a new shell instance, we need to set the `$PYTHONPATH` again, even if the virtual environment is still active.
 5. Use `pwd` as before to obtain the current `<PATH>` and run the following
@@ -58,8 +58,8 @@ $ export PYTHONPATH="${PYTHONPATH}:<PATH>"
 ```
 $ python src/frontend/app.py -i <PORT>
 ```
-7. The application should now run in the terminal, and display the following: </br> </br> ![frontend_screenshot](illustration_FEScrshot.png)
-8. If there is an error such as the following, it is likely due to an incorrect port being specified. Check the backend server for the correct port, and run the above command again. </br> </br>![illustration_FE_error.png](illustration_FE_error.png) 
+7. The application should now run in the terminal, and display the following: </br> </br> ![frontend_screenshot](project_utils/illustration_FEScrshot.png)
+8. If there is an error such as the following, it is likely due to an incorrect port being specified. Check the backend server for the correct port, and run the above command again. </br> </br>![illustration_FE_error.png](project_utils/illustration_FE_error.png) 
 
 
 10. You can interact with the inventory using console input.
@@ -71,12 +71,12 @@ $ python src/frontend/app.py -i <PORT>
 3. `/src`: contains the source code
 4. `/requirements.txt`
 5. `/README.md`
-6. Image files required for the Readme file
+6. `/project_utils`: Contains developer documeent, and image files required for the Readme file
 
 ## Best Programming Practices followed 
 1. **Client-Server Architecture**: Interaction between Python frontend and Python backend follows a Client-Server Architecture pattern.
-2. **Model-View-Controller Architecture**: The Python Flask backend follows an Model-View-Controller Architecture Pattern.
-3. **Modularity and Reusability: **: The code has a package structure that shows modularity. This has enabled reusability across functionalities.
+2. **Model-View-Controller Architecture**: The Python Flask backend follows a Model-View-Controller Architecture Pattern.
+3. **Modularity and Re-usability**: The code has a package structure that shows modularity. This has enabled re-usability across functionalities.
 4. **Encapsulation**: Encapsulation has been achieved as the code is organized into classes
 5. **Type Safety / Exception Handling**: Exception handling has been included using try/except/raise blocks. 
 6. **Version Control**: From the beginning of the project, **Git** has been used as a version control system.
