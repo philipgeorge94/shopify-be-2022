@@ -6,11 +6,13 @@ from src.backend.controller.controller import InvController
 app = Flask(__name__)
 
 try:
-    mongo = pymongo.MongoClient(
-        host="localhost",
-        port=27017,
-        serverSelectionTimeoutMS=1000
-    )
+    # mongo = pymongo.MongoClient(
+    #     host="localhost",
+    #     port=27017,
+    #     serverSelectionTimeoutMS=1000
+    # )
+    mongo = pymongo.MongoClient("mongodb+srv://shopifybe2022_user:shopifybe2022_password@shopify-be-2022-db.fihoz.mongodb.net/shopify_inventory?retryWrites=true&w=majority")
+
     mongo.server_info()  # triggers exception if cannot connect to db
     db = mongo.inventory
     invController = InvController(db)

@@ -25,6 +25,7 @@ class InvCLI:
         return response
 
     def display_main_menu(self):
+        self.prod_ids = refresh_prod_lookups(self.retrieve_products('all')[2])
         # Main menu options
         print()
         print("Main Menu: ")
@@ -69,7 +70,7 @@ class InvCLI:
         print()
         print("PRODUCT DESCRIPTION")
         print("Generating a dummy description for the product")
-        prod_details['prod_desc'] = "Solid spruce top. Mahogany laminate back and sides."
+        prod_details['prod_desc'] = input("Enter a description for the product ")
 
         print()
         print("PRODUCT QUANTITY")

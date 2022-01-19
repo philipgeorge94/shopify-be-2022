@@ -16,9 +16,7 @@ class InvModel:
             "pianofortes": 17,
             "harmonicas": 10
         }
-        all_prods, _ = self.get_product('all')
-        # Initializing the list of prod_ids to enable easy checking of duplicates
-        self.prod_ids = get_prod_id_list(all_prods)
+        self.refresh_prod_ids()
 
     def get_prod_categories(self):
         return self.prod_categories
@@ -28,9 +26,10 @@ class InvModel:
             return self.prod_ids[prod_id]
         return ""
 
-    def add_prod_id(self, prod_id, db_id):
-        print("in add_prod_id function")
-        self.prod_ids[prod_id] = db_id
+    def refresh_prod_ids(self):
+        print("in refresh_prod_ids function")
+        all_prods, _ = self.get_product('all')
+        self.prod_ids = get_prod_id_list(all_prods)
 
     def delete_prod_id(self, prod_id):
         del self.prod_ids[prod_id]
@@ -51,7 +50,7 @@ class InvModel:
             # for attr in dir(dbResponse):
             #     print(attr);
             # print(dbResponse.inserted_id)
-            self.add_prod_id(prod_data['prod_id'], dbResponse.inserted_id)
+            self.refresh_prod_ids()
 
             return f"{dbResponse.inserted_id}"
 
@@ -68,7 +67,7 @@ class InvModel:
                 print(f"****{attr}****")
             print("dbResponse successful")
             db_id = self.prod_ids[prod_id]
-            self.delete_prod_id(prod_id)
+            self.refresh_prod_ids()
             return db_id
 
         except Exception as ex:
@@ -93,8 +92,7 @@ class InvModel:
             print("dbResponse successful")
 
             if dbResponse.modified_count > 0:
-                self.prod_ids[prod_data['prod_id']] = db_id
-                del self.prod_ids[prod_id]
+                self.refresh_prod_ids()
                 return db_id, True
             else:
                 return db_id, False
