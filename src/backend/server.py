@@ -8,7 +8,7 @@ from src.backend.backend_utils.backend_utils import export_to_csv
 from src.backend.controller.controller import InvController
 
 parser = argparse.ArgumentParser(description="Run server for inventory management")
-parser.add_argument('-p', '--password', metavar='', help="Enter password received in application attachment 'auth.pdf'")
+parser.add_argument('-p', '--password', metavar='', required=True, help="Enter password received in application attachment 'auth.pdf'")
 parser.add_argument('-i', '--port', type=int, metavar='', default=8000,
                     help="Specify port for server to run. Default is 8000")
 args = parser.parse_args()
