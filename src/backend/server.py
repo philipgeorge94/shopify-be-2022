@@ -1,8 +1,14 @@
 import json
 from flask import Flask, Response, request
 import pymongo
+import argparse
 from src.backend.controller.controller import InvController
 
+parser = argparse.ArgumentParser(description="Run server for inventory management")
+parser.add_argument('-p', '--password', metavar='', help="Enter password received in application attachment 'auth.pdf'")
+parser.add_argument('-i', '--port', type=int, metavar='', default=8000,
+                    help="Specify port for server to run. Default is 8000")
+args = parser.parse_args()
 app = Flask(__name__)
 
 try:
@@ -11,11 +17,16 @@ try:
     #     port=27017,
     #     serverSelectionTimeoutMS=1000
     # )
-    mongo = pymongo.MongoClient("mongodb+srv://shopifybe2022_user:shopifybe2022_password@shopify-be-2022-db.fihoz.mongodb.net/shopify_inventory?retryWrites=true&w=majority")
+    validated = False
+    if args.password is None:
+        raise Exception("You haven't entered a password")
+    mongo = pymongo.MongoClient(
+        "mongodb+srv://shopifybe2022_user:" + args.password + "@shopify-be-2022-db.fihoz.mongodb.net/shopify_inventory?retryWrites=true&w=majority")
 
     mongo.server_info()  # triggers exception if cannot connect to db
     db = mongo.inventory
     invController = InvController(db)
+    validated = True
     pass
 
 except Exception as ex:
@@ -99,5 +110,8 @@ def retrieve_product(prod_id):
 
 #######################################
 if __name__ == "__main__":
-    # logging.info("Starting Server")
-    app.run(port=8000, debug=True)
+    if validated:
+        # logging.info("Starting Server")
+        app.run(port=args.port, debug=True)
+    else:
+        print("Could not connect to the database, therefore exiting application")

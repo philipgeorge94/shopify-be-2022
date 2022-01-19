@@ -7,8 +7,8 @@ from src.frontend.frontend_utils.frontend_utils import get_yn, refresh_prod_look
 
 class InvCLI:
 
-    def __init__(self):
-        self.url = 'http://localhost:8000/'
+    def __init__(self, port):
+        self.url = f'http://localhost:{port}/'
         self.check_connection()
         self.choices = main_menu_options
         self.prod_ids = refresh_prod_lookups(self.retrieve_products('all')[2])
