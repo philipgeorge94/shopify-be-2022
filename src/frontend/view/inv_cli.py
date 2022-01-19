@@ -10,22 +10,20 @@ class InvCLI:
     def __init__(self, port):
         self.url = f'http://localhost:{port}/'
         self.check_connection()
-        self.choices = main_menu_options
         self.prod_ids = refresh_prod_lookups(self.retrieve_products('all')[2])
 
     def retrieve_products(self, prod_id):
         response = requests.get(self.url + 'product/' + prod_id).json()
-        print("Retrieved Products: ", response)
+        # print("Retrieved Products: ", response)
         return response['message'], int(response['success_code']), response['prods_data']
 
     def check_connection(self):
         response = requests.get(self.url).json()
         print(response['message'], '\n')
-
         return response
 
     def display_main_menu(self):
-        self.prod_ids = refresh_prod_lookups(self.retrieve_products('all')[2])
+
         # Main menu options
         print()
         print("Main Menu: ")
@@ -70,8 +68,7 @@ class InvCLI:
 
         print()
         print("PRODUCT DESCRIPTION")
-        print("Generating a dummy description for the product")
-        prod_details['prod_desc'] = input("Enter a description for the product ")
+        prod_details['prod_desc'] = input("Enter a description for the product: ")
 
         print()
         print("PRODUCT QUANTITY")
@@ -133,7 +130,6 @@ class InvCLI:
         while True:
             print()
             print("Editing product ")
-            print_prod_data([prod])
             print(str(0) + ". Save to database")
             for key, value in prod_fields.items():
                 print(str(key) + ". Edit", value[0])
@@ -174,12 +170,13 @@ class InvCLI:
         print()
         print(response['message'])
         if success_code == 1:
-            print("Prod IDs before: ", self.prod_ids)
-            self.prod_ids[prod['prod_id']] = self.prod_ids[old_prod_id]
-            print("Prod IDs after adding new id: ", self.prod_ids)
-            del self.prod_ids[old_prod_id]
-            print("Prod IDs after deleting old ID: ", self.prod_ids)
-            print_prod_data([prod])
+            # print("Prod IDs before: ", self.prod_ids)
+            # self.prod_ids[prod['prod_id']] = self.prod_ids[old_prod_id]
+            # print("Prod IDs after adding new id: ", self.prod_ids)
+            # del self.prod_ids[old_prod_id]
+            # print("Prod IDs after deleting old ID: ", self.prod_ids)
+            self.prod_ids = refresh_prod_lookups(self.retrieve_products('all')[2])
+            # print_prod_data([prod])
             return True
         elif success_code == 3:
             return True
@@ -190,7 +187,7 @@ class InvCLI:
         response = requests.get(self.url + 'product/export')
         csv_data = response.text
         filename = response.headers['content-disposition'][response.headers['content-disposition'].rfind("/") + 1: -1]
-        print(filename)
+        # print(filename)
         print("Saving to <Your repo folder>/downloads/")
         return save_to_csv(csv_data, filename)
 
@@ -219,7 +216,11 @@ class InvCLI:
 
         if not flow:
             print()
-            print("The requested operation could not be performed due to an error. Returning to main menu", '\n')
+            print("The requested operation could not be performed due to an error.", '\n')
+        print()
+        print("Returning to main menu...")
+        # print()
+        self.prod_ids = refresh_prod_lookups(self.retrieve_products('all')[2])
 
         return
 #

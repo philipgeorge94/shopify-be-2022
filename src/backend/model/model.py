@@ -8,11 +8,11 @@ class InvModel:
         self.db = db
 
         # Initializing the list of prod_ids to enable easy checking of existing categories
-        self.prod_categories = {
-            "guitars": 13,
-            "pianofortes": 17,
-            "harmonicas": 10
-        }
+        # self.prod_categories = {
+        #     "guitars": 13,
+        #     "pianofortes": 17,
+        #     "harmonicas": 10
+        # }
         self.refresh_prod_ids()
 
     def get_prod_categories(self):

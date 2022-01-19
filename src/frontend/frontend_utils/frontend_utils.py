@@ -10,7 +10,7 @@ def get_yn(prompt):
 
 
 def refresh_prod_lookups(prods_data):
-    print(str(len(prods_data)) + ' products in database')
+    # print(str(len(prods_data)) + ' products in database')
     prod_ids = {}
     for prod in prods_data:
         prod_ids[prod['prod_id']] = prod['_id']
