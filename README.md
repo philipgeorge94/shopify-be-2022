@@ -7,7 +7,8 @@ The developer document for the project can be found at this [link](DeveloperDocu
 ## How to Run the Application
 
 ### Install Python
-This application requires python 3.8.9 or later. Depending on the number of python versions installed on your system, you may need to specifically use the commands `python3` and `pip3` instead of `python` and `pip` in the steps below.
+1. **This application requires python 3.8.9 or later.** Python versions below 3.8 will run into a syntax error since they ddo not support the Walrus operator `:=` introduced in 3.8
+2. Depending on the number of python versions installed on your system, you may need to specifically use the commands `python3` and `pip3` instead of `python` and `pip` in the steps below.
 
 ### Clone the project
 1. Open terminal on macOS. The following commands can also be executed on command prompt in Windows.
