@@ -8,7 +8,7 @@ from src.frontend.frontend_utils.frontend_utils import get_yn, refresh_prod_look
 class InvCLI:
 
     def __init__(self, port):
-        self.url = f'http://localhost:{port}/'
+        self.url = f'http://{HOSTNAME}:{port}/'
         self.check_connection()
         self.prod_ids = refresh_prod_lookups(self.retrieve_products('all')[2])
 
@@ -111,12 +111,12 @@ class InvCLI:
         print()
         prod_id = input("Enter prod_id to view or 'all' to view all products: ").lower()
         if prod_id != 'all' and prod_id not in self.prod_ids:
-            print("This product doesn't exist in the database")
+            print(PROD_NOT_FOUND)
             return False
         message, success_code, prods_data = self.retrieve_products(prod_id)
         if not prods_data:
             print()
-            print("No products to display")
+            print(EMPTY_PRODS_MESSAGE)
             return True
 
         if success_code == 1:
@@ -131,21 +131,21 @@ class InvCLI:
             print()
             print("Editing product ")
             print(str(0) + ". Save to database")
-            for key, value in prod_fields.items():
+            for key, value in PROD_FIELDS.items():
                 print(str(key) + ". Edit", value[0])
             field = int(input("Enter choice: "))
             if field == 0:
                 break
-            if field < 0 or field > len(prod_fields):
+            if field < 0 or field > len(PROD_FIELDS):
                 print()
                 print("Invalid input! Enter again.")
                 continue
-            new_value = input("Enter new value for %s: " % prod_fields[field][0])
-            if prod_fields[field][1] == 'prod_id' and new_value in self.prod_ids:
+            new_value = input("Enter new value for %s: " % PROD_FIELDS[field][0])
+            if PROD_FIELDS[field][1] == 'prod_id' and new_value in self.prod_ids:
                 print()
                 print("This product ID already belongs to another product in the database. Cannot update")
                 continue
-            prod[prod_fields[field][1]] = new_value
+            prod[PROD_FIELDS[field][1]] = new_value
             print("Value changed")
 
         return prod

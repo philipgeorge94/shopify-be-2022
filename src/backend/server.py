@@ -4,6 +4,7 @@ from flask import Flask, Response, request, send_file
 import pymongo
 import argparse
 
+from src.backend.backend_utils.constants import *
 from src.backend.backend_utils.backend_utils import export_to_csv
 from src.backend.controller.controller import InvController
 
@@ -24,7 +25,7 @@ try:
     if args.password is None:
         raise Exception("You haven't entered a password")
     mongo = pymongo.MongoClient(
-        "mongodb+srv://shopifybe2022_user:" + args.password + "@shopify-be-2022-db.fihoz.mongodb.net/shopify_inventory?retryWrites=true&w=majority")
+        f"{MONGO_CLIENT_PREFIX}://{MONGO_CLIENT_USERNAME}:{args.password}@{MONGO_CLIENT_SUFFIX}")
 
     mongo.server_info()  # triggers exception if cannot connect to db
     db = mongo.inventory
@@ -57,7 +58,6 @@ def create_product():
              "success_code": str(controller_response)
              },
         ),
-        # {"name":"Philip","ID":,f"{dbResponse.inserted_id}"},
         status=200 if controller_response > 0 else 422,
         mimetype='application/json'
     )
@@ -73,7 +73,6 @@ def delete_product(prod_id):
              "success_code": str(controller_response)
              },
         ),
-        # {"name":"Philip","ID":,f"{dbResponse.inserted_id}"},
         status=200 if controller_response > 0 else 422,
         mimetype='application/json'
     )
@@ -89,7 +88,6 @@ def update_product(prod_id):
              "success_code": str(controller_response)
              },
         ),
-        # {"name":"Philip","ID":,f"{dbResponse.inserted_id}"},
         status=200 if controller_response > 0 else 422,
         mimetype='application/json'
     )
