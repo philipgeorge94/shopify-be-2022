@@ -140,7 +140,12 @@ class InvCLI:
                 print()
                 print("Invalid input! Enter again.")
                 continue
-            prod[prod_fields[field][1]] = input("Enter new value for %s: " % prod_fields[field][0])
+            new_value = input("Enter new value for %s: " % prod_fields[field][0])
+            if prod_fields[field][1] == 'prod_id' and new_value in self.prod_ids:
+                print()
+                print("This product ID already belongs to another product in the database. Cannot update")
+                continue
+            prod[prod_fields[field][1]] = new_value
             print("Value changed")
 
         return prod
