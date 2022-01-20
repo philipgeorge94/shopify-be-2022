@@ -24,7 +24,7 @@ class InvModel:
         return ""
 
     def refresh_prod_ids(self):
-        print("in refresh_prod_ids function")
+        # print("in refresh_prod_ids function")
         all_prods, _ = self.get_product('all')
         self.prod_ids = get_prod_id_list(all_prods)
 
@@ -32,7 +32,7 @@ class InvModel:
         del self.prod_ids[prod_id]
 
     def add_product(self, prod_data):
-        print("in add_product function")
+        # print("in add_product function")
         try:
             query = {
                 "prod_id": prod_data['prod_id'],
@@ -42,7 +42,7 @@ class InvModel:
                 "prod_qty": prod_data['prod_qty'],
             }
             dbResponse = self.db.product.insert_one(query)
-            print("dbResponse successful")
+            # print("dbResponse successful")
 
             # for attr in dir(dbResponse):
             #     print(attr);
@@ -56,7 +56,7 @@ class InvModel:
             return ""
 
     def remove_product(self, prod_id):
-        print("in remove_product function")
+        # print("in remove_product function")
         try:
             query = {"_id": ObjectId(self.prod_ids[prod_id])}
             dbResponse = self.db.product.delete_one(query)
@@ -72,7 +72,7 @@ class InvModel:
             return ""
 
     def modify_product(self, prod_id, prod_data):
-        print("in modify_product function")
+        # print("in modify_product function")
         db_id = self.prod_ids[prod_id]
         try:
             queryFilter = {"_id": ObjectId(db_id)}
@@ -86,7 +86,7 @@ class InvModel:
                 }
             }
             dbResponse = self.db.product.update_one(queryFilter, queryValues)
-            print("dbResponse successful")
+            # print("dbResponse successful")
 
             if dbResponse.modified_count > 0:
                 self.refresh_prod_ids()
@@ -99,7 +99,7 @@ class InvModel:
             return "", False
 
     def get_product(self, prod_id):
-        print("in get_product function")
+        # print("in get_product function")
         try:
             if prod_id == 'all':
                 dbResponse = self.db.product.find()

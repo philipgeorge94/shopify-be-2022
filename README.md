@@ -2,9 +2,7 @@
 My implementation of the Shopify Backend Intern Developer Challenge for 2022
 
 ## Code Walk-through
-The developer document for the project can be found at this [link](DeveloperDocument.pdf). It provides a brief walk-through of:
-1. Architecture
-2. API Documentation
+The developer document for the project can be found at this [link](DeveloperDocument.pdf). It provides a brief walk-through of the application architecture, the tech stack, software design architecture, and API documentation.
 
 ## How to Run the Application
 
@@ -71,7 +69,7 @@ $ python src/frontend/app.py -i <PORT>
 3. `/src`: contains the source code
 4. `/requirements.txt`
 5. `/README.md`
-6. `/project_utils`: Contains developer documeent, and image files required for the Readme file
+6. `/project_utils`: Contains developer document, and image files required for the Readme file
 
 ## Best Programming Practices followed 
 1. **Client-Server Architecture**: Interaction between Python frontend and Python backend follows a Client-Server Architecture pattern.
